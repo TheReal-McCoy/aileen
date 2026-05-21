@@ -1,5 +1,6 @@
 import os
 from config import MAX_CHARS
+from google.genai import types
 
 def get_file_content(working_directory, file_path):
     onepath = os.path.join(working_directory, file_path)
@@ -17,3 +18,18 @@ def get_file_content(working_directory, file_path):
         return contents
     except Exception as e:
         return f"Error: problem reading file - {e}"
+    
+schema_get_file_content = types.FunctionDeclaration(
+    name="get_file_content",
+    description="Reads a file in a specified directory relative to the working directory, providing file contents",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="Path to read file from, relative to the working directory",
+            ),
+        },
+        required=["file_path"],
+    ),
+)
